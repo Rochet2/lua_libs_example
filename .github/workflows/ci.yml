@@ -1,0 +1,47 @@
+name: C/C++ CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+        luaversion: [lua51, lua52, lua53, lua54, luajit]
+        luastatic: [ON, OFF]
+        buildtype: [Debug, Release]
+
+    name: ${{ matrix.os }}:${{ matrix.luaversion }}:STATIC-${{ matrix.luastatic }}:${{ matrix.buildtype }}
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: install dependencies
+      run: |
+        sudo apt-get install libc6-dev libreadline-dev
+      if: matrix.os == 'ubuntu-latest'
+    - name: build & install
+      shell: bash
+      run: |
+        mkdir build
+        cd build
+        # buildtype for linux and mac is set with CMAKE_BUILD_TYPE
+        cmake ../ -DCMAKE_INSTALL_PREFIX=./installed -DLUA_VERSION=${{ matrix.luaversion }} -DLUA_STATIC=${{ matrix.luastatic }} -DCMAKE_BUILD_TYPE=${{ matrix.buildtype }}
+        # buildtype for windows is set with --config
+        cmake --build . --config ${{ matrix.buildtype }}
+        cmake --install . --config ${{ matrix.buildtype }}
+      env:
+        MACOSX_DEPLOYMENT_TARGET: 10.14
+    - name: run
+      if: matrix.os != 'windows-latest'
+      run: |
+        cd build/installed/bin
+        ./lua_example
+    - name: run
+      if: matrix.os == 'windows-latest'
+      shell: bash
+      run: |
+        cd build/installed
+        ./lua_example
