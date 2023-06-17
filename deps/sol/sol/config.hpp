@@ -20,8 +20,8 @@
 // CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 // This file was generated with a script.
-// Generated 2020-10-03 21:34:25.034794 UTC
-// This header was generated with sol v3.2.1 (revision 48eea7b5)
+// Generated 2022-06-25 08:14:19.336233 UTC
+// This header was generated with sol v3.3.0 (revision eba86625)
 // https://github.com/ThePhD/sol2
 
 #ifndef SOL_SINGLE_CONFIG_HPP
@@ -47,12 +47,6 @@ https://sol2.readthedocs.io/en/latest/safety.html ! You can also pass them throu
 the build system, or the command line options of your compiler.
 
 */
-
-#ifndef SOL_CHECK_ARGUMENTS
-// #define SOL_CHECK_ARGUMENTS 1
-#endif
-// #define SOL_SAFE_FUNCTION 1
-#define SOL_ALL_SAFETIES_ON 0
 
 // end of sol/config.hpp
 
